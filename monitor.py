@@ -38,3 +38,4 @@ def check_endpoints():
 
 if __name__ == "__main__":
     check_endpoints()
+    
