@@ -21,10 +21,10 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: deliver
+    needs: deliver # precisa do passo anterior
       steps:
         - uses: actions/download-artifact@v8
           with:
             name: projetozipado
         - name: Display structure of downloaded files
-          run: ls -R           
+          run: ls -R
