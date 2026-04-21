@@ -82,8 +82,10 @@ jobs:
     needs: docker
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout do código
+      - name: Checkout do código com histórico completo
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Isso é crucial para essa action não dar erro de "length"
 
       - name: Run Discord Webhook
         uses: johnnyhuy/actions-discord-git-webhook@main
