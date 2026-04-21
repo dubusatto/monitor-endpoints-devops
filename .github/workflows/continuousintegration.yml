@@ -82,12 +82,8 @@ jobs:
     needs: docker
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout do código com histórico completo
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # Isso é crucial para essa action não dar erro de "length"
-
-      - name: Run Discord Webhook
-        uses: johnnyhuy/actions-discord-git-webhook@main
-        with:
-          webhook_url: ${{ secrets.DISCORD_WEBHOOK }}
+      - name: Enviar notificacao nativa para o Discord
+        run: |
+          curl -H "Content-Type: application/json" \
+          -d '{"content": "🚀 **Deploy de Sucesso!** Uma nova versão da API de monitoramento acabou de ser construída e enviada para o Docker Hub com sucesso!"}' \
+          ${{ secrets.DISCORD_WEBHOOK }}
