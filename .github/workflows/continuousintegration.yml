@@ -45,7 +45,6 @@ jobs:
   deploy:
     needs: deliver
     runs-on: ubuntu-latest
-    
     steps:
       - uses: actions/download-artifact@v4
         with:
@@ -78,4 +77,13 @@ jobs:
           context: .
           push: true
           tags: dubusatto/monitor-api:latest
-        
+
+  discord_notification:
+    needs: docker
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enviar notificacao nativa para o Discord
+        run: |
+          curl -H "Content-Type: application/json" \
+          -d '{"content": "🚀 **Deploy de Sucesso!** Uma nova versão da API de monitoramento acabou de ser construída e enviada para o Docker Hub com sucesso!"}' \
+          ${{ secrets.DISCORD_WEBHOOK }}
