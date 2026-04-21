@@ -86,5 +86,7 @@ jobs:
       - name: Enviar notificacao nativa para o Discord
         run: |
           curl -H "Content-Type: application/json" \
-          -d '{"content": "Deploy de Sucesso! Uma nova versão da API de monitoramento acabou de ser construída e enviada para o Docker Hub com sucesso!"}' \
+          -d '{
+            "content": "**Deploy de Sucesso!**\n\nUma nova versão da API de monitoramento foi enviada para o Docker Hub com sucesso.\n\n**Autor:** `${{ github.actor }}`\n**Ver as mudanças (Commit):** https://github.com/${{ github.repository }}/commit/${{ github.sha }}"
+          }' \
           ${{ secrets.DISCORD_WEBHOOK }}
