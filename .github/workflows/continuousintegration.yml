@@ -45,7 +45,6 @@ jobs:
   deploy:
     needs: deliver
     runs-on: ubuntu-latest
-    
     steps:
       - uses: actions/download-artifact@v4
         with:
@@ -78,4 +77,15 @@ jobs:
           context: .
           push: true
           tags: dubusatto/monitor-api:latest
-        
+
+  discord_notification:
+    needs: docker
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Run Discord Webhook
+        uses: johnnyhuy/actions-discord-git-webhook@main
+        with:
+          webhook_url: ${{ secrets.DISCORD_WEBHOOK }}
