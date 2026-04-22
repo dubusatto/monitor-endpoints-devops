@@ -90,3 +90,21 @@ jobs:
             "content": "**Deploy de Sucesso!**\n\nUma nova versão da API de monitoramento foi enviada para o Docker Hub com sucesso.\n\n**Autor:** `${{ github.actor }}`\n**Ver as mudanças (Commit):** https://github.com/${{ github.repository }}/commit/${{ github.sha }}"
           }' \
           ${{ secrets.DISCORD_WEBHOOK }}
+
+  telegram_notification:
+    needs: docker
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enviar notificacao via Action do Telegram
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            Deploy de Sucesso!
+            
+            Uma nova versão da API de monitoramento foi enviada para o Docker Hub com sucesso.
+            
+            Autor: ${{ github.actor }}
+            Ver as mudanças: https://github.com/${{ github.repository }}/commit/${{ github.sha }}
