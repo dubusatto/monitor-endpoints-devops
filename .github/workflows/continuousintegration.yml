@@ -9,6 +9,7 @@ on:
 
 jobs:
   build:
+    name: Build & Lint
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
@@ -24,11 +25,33 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           
-      - name: Rodar o Pylint no nosso script
-        run: pylint monitor_api.py
+      - name: Rodar o Pylint
+        run: pylint src/monitor_api.py
+
+  test:
+    name: Unit Tests
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+        
+      - name: Configurar o Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          
+      - name: Instalar dependências de Teste
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest httpx
+          
+      - name: Rodar Testes Unitários com Pytest
+        run: python -m pytest test/ -v
 
   deliver:
-    needs: build
+    needs: test 
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
